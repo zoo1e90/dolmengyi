@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dolmengyi-v1';
+const CACHE_NAME = 'dolmengyi-v2';
 const CORE_ASSETS = [
   './',
   './index.html',
