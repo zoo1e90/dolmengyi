@@ -1,49 +1,17 @@
-const CACHE_NAME = 'dolmengyi-v2';
-const CORE_ASSETS = [
-  './',
-  './index.html',
-  './budget.html',
-  './daily.html',
-  './budget-icon.png',
-  './daily-icon.png',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
-];
-
-self.addEventListener('install', (event) => {
+// 이 서비스워커는 이전 버전의 캐시 문제를 해결하기 위해
+// 스스로 모든 캐시를 지우고 등록 해제됩니다.
+self.addEventListener('install', () => {
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS))
-  );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
-      )
-    )
-  );
-  self.clients.claim();
-});
-
-// 캐시 우선, 없으면 네트워크 요청 후 캐시에 저장
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request)
-        .then((response) => {
-          if (response && response.status === 200) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-          }
-          return response;
-        })
-        .catch(() => cached);
-    })
+    (async () => {
+      const cacheNames = await caches.keys();
+      await Promise.all(cacheNames.map((name) => caches.delete(name)));
+      const clientsList = await self.clients.matchAll({ type: 'window' });
+      clientsList.forEach((client) => client.navigate(client.url));
+      await self.registration.unregister();
+    })()
   );
 });
