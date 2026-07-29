@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="돌멩이">
+<meta name="theme-color" content="#F8F7F3">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<title>돌멩이</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow: hidden; background: #F8F7F3; font-family: 'Noto Sans KR', sans-serif; }
+  .home { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; height: 100dvh; padding: 24px; gap: 28px; }
+  .home-title { font-family: 'Gowun Batang', serif; font-size: 26px; color: #1C1A14; letter-spacing: 0.02em; }
+  .home-sub { font-size: 13px; color: #8A8580; margin-top: -16px; }
+
+  .card-row { display: flex; gap: 18px; }
+  .card {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    width: 150px; height: 190px;
+    border-radius: 26px; border: none; cursor: pointer;
+    background: #FFFFFF; box-shadow: 0 6px 20px rgba(28,26,20,0.08), 0 1px 4px rgba(28,26,20,0.05);
+    text-decoration: none; -webkit-tap-highlight-color: transparent;
+    transition: transform .12s, box-shadow .12s;
+  }
+  .card:active { transform: scale(0.95); box-shadow: 0 2px 10px rgba(28,26,20,0.1); }
+  .card img { width: 96px; height: 96px; object-fit: contain; border-radius: 18px; }
+  .card span { font-size: 15px; font-weight: 700; color: #1C1A14; }
+  .card.budget span { color: #2A7D5F; }
+  .card.daily span { color: #C4991A; }
+</style>
+</head>
+<body>
+<div class="home">
+  <div style="text-align:center">
+    <div class="home-title">🪨 돌멩이</div>
+    <div class="home-sub">어떤 걸 열어볼까요?</div>
+  </div>
+  <div class="card-row">
+    <a class="card budget" href="budget.html">
+      <img src="budget-icon.png" alt="가계부">
+      <span>가계부</span>
+    </a>
+    <a class="card daily" href="daily.html">
+      <img src="daily-icon.png" alt="데일리">
+      <span>데일리</span>
+    </a>
+  </div>
+</div>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
